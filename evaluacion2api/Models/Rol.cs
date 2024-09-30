@@ -8,6 +8,5 @@ namespace evaluacion2api.Models
 
         [Required]
         public string Nombre { get; set; }
-        public ICollection<Usuario> Usuarios { get; set; }
     }
 }

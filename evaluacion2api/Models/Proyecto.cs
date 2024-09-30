@@ -22,7 +22,6 @@ namespace evaluacion2api.Models
         
         [Required]
         public DateTime FechaCreacion { get; set; }
-        public ICollection <Tarea> Tareas { get; set; }
 
     }
 }
