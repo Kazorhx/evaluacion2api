@@ -25,11 +25,11 @@ namespace evaluacion2api.Models
         //Llaves foraneas 
         [Required]
         [ForeignKey("Proyecto")]
-        public string ProyectoId { get; set; }
+        public int ProyectoId { get; set; }
 
         [Required]
         [ForeignKey("Usuario")]
-        public string UsuarioId { get; set; }
+        public int UsuarioId { get; set; }
 
         [Required]
         public string SetHerramientas { get; set; }
