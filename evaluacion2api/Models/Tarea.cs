@@ -11,10 +11,10 @@ namespace evaluacion2api.Models
         public string Area { get; set; }
 
         [ForeignKey("Proyecto")]
-        public string ProyectoId { get; set; }
+        public int ProyectoId { get; set; }
 
         [ForeignKey("Usuario")]
-        public string UsuarioId { get; set; }
+        public int UsuarioId { get; set; }
 
         public string SetHerramientas { get; set; }
     }
