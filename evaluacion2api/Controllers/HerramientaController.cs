@@ -1,83 +1,90 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using evaluacion2api.Models;
+using evaluacion2api.Services;
+using evaluacion2api.DTOS;
 
 namespace evaluacion2api.Controllers
 {
+    [ApiController]
+    [Route("MiApiDeEjemplo/[controller]")]
     public class HerramientaController : Controller
     {
-        // GET: HerramientaController
-        public ActionResult Index()
+        private readonly HerramientaService _herramientaService;
+
+        public HerramientaController(HerramientaService herramientaService)
         {
-            return View();
+            _herramientaService = herramientaService;
         }
 
-        // GET: HerramientaController/Details/5
-        public ActionResult Details(int id)
+        [HttpPost("crear-herramienta")]
+        public async Task<ActionResult<Herramienta>> CreateHerramienta([FromBody] HerramientaDTO herramientaDTO)
         {
-            return View();
-        }
-
-        // GET: HerramientaController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: HerramientaController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            var newHerramienta = new Herramienta
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+                Nombre = herramientaDTO.Nombre,
+                Marca = herramientaDTO.Marca,
+                Cantidad = herramientaDTO.Cantidad,
+                FechaAdquisicion = herramientaDTO.FechaAdquisicion
+            };
+
+            var result = await _herramientaService.CreateHerramientaAsync(newHerramienta);
+            return Ok(result);
         }
 
-        // GET: HerramientaController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet("obtener-herramientas")]
+        public async Task<ActionResult<List<Herramienta>>> GetAllHerramientas()
         {
-            return View();
+            var herramientas = await _herramientaService.GetAllHerramientasAsync();
+            return Ok(herramientas);
         }
 
-        // POST: HerramientaController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpGet("obtener-herramienta/{id}")]
+        public async Task<ActionResult<Herramienta>> GetHerramientaById(int id)
         {
-            try
+            var herramienta = await _herramientaService.GetHerramientaByIdAsync(id);
+
+            if (herramienta == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
+
+            return Ok(herramienta);
         }
 
-        // GET: HerramientaController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpPut("actualizar-herramienta/{id}")]
+        public async Task<ActionResult> UpdateHerramienta(int id, [FromBody] HerramientaDTO herramientaDTO)
         {
-            return View();
+            var herramienta = new Herramienta
+            {
+                Nombre = herramientaDTO.Nombre,
+                Marca = herramientaDTO.Marca,
+                Cantidad = herramientaDTO.Cantidad,
+                FechaAdquisicion = herramientaDTO.FechaAdquisicion
+            };
+
+            var result = await _herramientaService.UpdateHerramientaAsync(id, herramienta);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return Ok("Herramienta actualizada correctamente");
         }
 
-        // POST: HerramientaController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpDelete("eliminar-herramienta/{id}")]
+        public async Task<ActionResult> DeleteHerramienta(int id)
         {
-            try
+            var result = await _herramientaService.DeleteHerramientaAsync(id);
+
+            if (!result)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
+
+            return Ok("Herramienta eliminada correctamente");
         }
     }
 }
