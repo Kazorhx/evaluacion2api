@@ -1,6 +1,6 @@
 ﻿namespace evaluacion2api.DTOS
 {
-    public class RolesDTO
+    public class HerramientaDTO
     {
         public string Nombre { get; set; }
     }
