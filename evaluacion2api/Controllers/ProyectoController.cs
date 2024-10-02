@@ -60,11 +60,11 @@ namespace evaluacion2api.Controllers
         }
 
         [HttpPost("ingresar-proyecto")]
-        public async Task<ActionResult<NuevaProyectoResponse>> PostProyecto([FromBody] Proyecto proyecto)
+        public async Task<ActionResult<NuevoProyectoResponse>> PostProyecto([FromBody] Proyecto proyecto)
         {
             var ingreso = await _proyectoService.IngresarProyecto(proyecto);
 
-            var response = new NuevaProyectoResponse
+            var response = new NuevoProyectoResponse
             {
                 Data = ingreso,
                 Code = ingreso ? 201 : 400,

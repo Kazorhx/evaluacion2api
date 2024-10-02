@@ -131,5 +131,20 @@ namespace evaluacion2api.Services
         {
             return status == "Pendiente" || status == "En progreso" || status == "Finalizado";
         }
+
+        internal async Task<bool> IngresarProyecto(Proyecto proyecto)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal async Task<Proyecto> ObtenerProyecto(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal async Task<List<Proyecto>> ListaProyectos()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
