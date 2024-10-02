@@ -13,7 +13,15 @@ namespace evaluacion2api.Responses
     {
     }
 
-    public class NuevaProyectoResponse : ResponseBase<bool>
+    public class NuevoProyectoResponse : ResponseBase<bool>
     {
     }
-}
+    public class UpdateProyectoResponse : ResponseBase<bool>
+    {
+    }
+
+    public class DeleteProyectoResponse : ResponseBase<bool>
+    {
+    }
+
+    }
