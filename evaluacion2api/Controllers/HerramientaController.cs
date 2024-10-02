@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
+using evaluacion2api.Responses;
+using evaluacion2api.Data;
 using evaluacion2api.Models;
 using evaluacion2api.Services;
 using evaluacion2api.DTOS;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace evaluacion2api.Controllers
 {
     [ApiController]
     [Route("MiApiDeEjemplo/[controller]")]
-    public class HerramientaController : Controller
+    public class HerramientaController : ControllerBase
     {
         private readonly HerramientaService _herramientaService;
 
@@ -18,6 +21,7 @@ namespace evaluacion2api.Controllers
             _herramientaService = herramientaService;
         }
 
+        // Crear herramienta
         [HttpPost("crear-herramienta")]
         public async Task<ActionResult<Herramienta>> CreateHerramienta([FromBody] HerramientaDTO herramientaDTO)
         {
@@ -30,9 +34,10 @@ namespace evaluacion2api.Controllers
             };
 
             var result = await _herramientaService.CreateHerramientaAsync(newHerramienta);
-            return Ok(result);
+            return CreatedAtAction(nameof(GetHerramientaById), new { id = result.Id }, result);
         }
 
+        // Obtener todas las herramientas
         [HttpGet("obtener-herramientas")]
         public async Task<ActionResult<List<Herramienta>>> GetAllHerramientas()
         {
@@ -75,7 +80,7 @@ namespace evaluacion2api.Controllers
         }
 
         [HttpDelete("eliminar-herramienta/{id}")]
-        public async Task<ActionResult> DeleteHerramienta(int id)
+        public async Task<ActionResult<bool>> DeleteHerramienta(int id)
         {
             var result = await _herramientaService.DeleteHerramientaAsync(id);
 

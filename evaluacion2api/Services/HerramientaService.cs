@@ -17,44 +17,58 @@ namespace evaluacion2api.Services
         }
 
         // Método para crear una herramienta
-        public async Task<Herramienta> CreateToolAsync(string toolName)
+        public async Task<Herramienta> CreateHerramientaAsync(Herramienta herramienta)
         {
-            var newTool = new Herramienta
+            if (string.IsNullOrWhiteSpace(herramienta.Nombre))
             {
-                Nombre = toolName
-            };
+                throw new ArgumentException("El nombre de la herramienta es obligatorio.");
+            }
 
-            await _dbContext.Herramientas.AddAsync(newTool);
+            _dbContext.Herramientas.Add(herramienta);
             await _dbContext.SaveChangesAsync();
 
-            return newTool;
+            return herramienta;
         }
 
         // Método para obtener todas las herramientas
-        public async Task<List<Herramienta>> GetAllToolsAsync()
+        public async Task<List<Herramienta>> GetAllHerramientasAsync()
         {
             return await _dbContext.Herramientas.ToListAsync();
         }
 
         // Método para obtener una herramienta por ID
-        public async Task<Herramienta> GetToolByIdAsync(int toolId)
+        public async Task<Herramienta> GetHerramientaByIdAsync(int id)
         {
-            return await _dbContext.Herramientas.FirstOrDefaultAsync(h => h.Id == toolId);
+            return await _dbContext.Herramientas.FirstOrDefaultAsync(h => h.Id == id);
         }
 
         // Método para eliminar una herramienta
-        public async Task<bool> DeleteToolAsync(int toolId)
+        public async Task<bool> DeleteHerramientaAsync(int id)
         {
-            var toolToDelete = await _dbContext.Herramientas.FindAsync(toolId);
+            var HerramientaEliminar = await _dbContext.Herramientas.FindAsync(id);
 
-            if (toolToDelete == null)
+            if (HerramientaEliminar != null)
             {
-                return false;
+                _dbContext.Herramientas.Remove(HerramientaEliminar);
+                await _dbContext.SaveChangesAsync();
+                return true;
             }
 
-            _dbContext.Herramientas.Remove(toolToDelete);
-            await _dbContext.SaveChangesAsync();
+            return false;
+        }
 
+        // Método para actualizar una herramienta (agregado)
+        public async Task<bool> UpdateHerramientaAsync(int id, Herramienta herramienta)
+        {
+            var Herramientaactualizar = await _dbContext.Herramientas.FindAsync(id);
+            if (Herramientaactualizar == null) return false;
+
+            Herramientaactualizar.Nombre = herramienta.Nombre;
+            Herramientaactualizar.Marca = herramienta.Marca;
+            Herramientaactualizar.Cantidad = herramienta.Cantidad;
+            Herramientaactualizar.FechaAdquisicion = herramienta.FechaAdquisicion;
+
+            await _dbContext.SaveChangesAsync();
             return true;
         }
     }
